@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+        name: upload-node-deployment
+spec:
+        selector:
+                matchLabels:
+                        app: upload-node
+        replicas: 2
+        template:
+                metadata:
+                        labels:
+                                app: upload-node
+                spec:
+                        containers:
+                                - name: upload-node
+                                  image: gcr.io/kubernetesproba/uploadtest-node:v1
+---
+apiVersion: v1
+kind: Service
+metadata:
+        name: upload-node-service
+spec:
+        selector:
+                app: upload-node
+        ports:
+                - name: http
+                  port: 3000
+                  nodePort: 31080
+
+        type: LoadBalancer
